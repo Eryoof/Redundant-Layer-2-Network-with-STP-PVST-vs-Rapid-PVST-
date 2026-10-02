@@ -9,7 +9,7 @@ A Cisco Packet Tracer lab that builds a redundant Access/Distribution switch top
 - Compare lost pings under PVST+ and Rapid PVST+.
 
 ## Topology
-
+![Network topology](IMG_2686.JPG)
 - 2 Distribution switches: `DS1`, `DS2` (Cisco 2960-24TT)
 - 2 Access switches: `AS1`, `AS2` (Cisco 2960-24TT)
 - 4 PCs: PC0 and PC1 on AS1, PC2 and PC3 on AS2
@@ -70,6 +70,9 @@ Access switches only needed `hostname AS1` / `hostname AS2`.
 1. **Default behavior (no root configured):** the root bridge was elected by lowest MAC address, and it turned out to be an access switch (AS1).
 2. **After manual root placement:** DS1 became the root (`This bridge is the root`) and DS2 the backup (bridge priority 28673).
 3. **Blocked ports:** on AS1 and AS2, `Fa0/2` (the link toward DS2) was in the `Altn BLK` state: the redundant path, kept ready but not forwarding.
+DS1 as primary root and DS2 as backup root (bridge priority 28673):
+
+![DS1 and DS2 spanning-tree output](IMG_2689.JPG)
 
 ## Failover test
 
@@ -87,6 +90,13 @@ Result of the shutdown: AS1's `Fa0/2` changed from `Altn BLK` to `Root FWD` with
 |---|---|---|---|
 | PVST+ (default) | 100 | 5 | 5 |
 | Rapid PVST+ | 100 | 0 | 0 |
+PVST+ ping summary (5 of 100 lost):
+
+![PVST+ result](IMG_2687.JPG)
+
+Rapid PVST+ ping summary (0 of 100 lost), with AS1 spanning-tree state:
+
+![Rapid PVST+ result](IMG_2688.JPG)
 
 ## Notes and limitations
 
@@ -97,5 +107,5 @@ Result of the shutdown: AS1's `Fa0/2` changed from `Altn BLK` to `Root FWD` with
 
 ## Files
 
-- `STP-redundancy.pkt`: Packet Tracer project
-- `images/`: topology and `show spanning-tree` screenshots (before and after failover)
+- `STP-redundancy..pkt`: Packet Tracer project
+
